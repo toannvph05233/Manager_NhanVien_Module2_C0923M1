@@ -2,23 +2,24 @@ import model.FullTime;
 import model.PartTime;
 import model.Staff;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ManagerStaff {
-    Staff[] staffs = {};
+    ArrayList<Staff> staffs = new ArrayList<>();
     Scanner scanner = new Scanner(System.in);
 
 
     public void display() {
-        for (int i = 0; i < staffs.length; i++) {
-            System.out.println(staffs[i]);
+        for (int i = 0; i < staffs.size(); i++) {
+            System.out.println(staffs.get(i));
         }
     }
 
     public void showSalaryByName(String name) {
         int index = findByName(name);
         if (index != -1) {
-            System.out.println(staffs[index].salary());
+            System.out.println(staffs.get(index).salary());
         } else {
             System.out.println("Khong có nhân viên cần tìm");
         }
@@ -27,9 +28,9 @@ public class ManagerStaff {
     public void edit(String name) {
         int index = findByName(name);
         if (index != -1) {
-            boolean isFullTime = staffs[index] instanceof FullTime;
+            boolean isFullTime = staffs.get(index) instanceof FullTime;
             Staff staff = createStaff(isFullTime);
-            staffs[index] = staff;
+            staffs.set(index,staff);
         } else {
             System.out.println("Khong có nhân viên cần tìm");
         }
@@ -38,14 +39,7 @@ public class ManagerStaff {
     public void deleteStaff(String name) {
         int index = findByName(name);
         if (index != -1) {
-            Staff[] newArr = new Staff[staffs.length - 1];
-            for (int i = 0; i < newArr.length; i++) {
-                if (i < index)
-                    newArr[i] = staffs[i];
-                else
-                    newArr[i] = staffs[i + 1];
-            }
-            staffs = newArr;
+            staffs.remove(index);
         } else {
             System.out.println("Khong có nhân viên cần tìm");
         }
@@ -54,8 +48,8 @@ public class ManagerStaff {
 
 
     public int findByName(String name) {
-        for (int i = 0; i < staffs.length; i++) {
-            if (staffs[i].getName().equals(name)) {
+        for (int i = 0; i < staffs.size(); i++) {
+            if (staffs.get(i).getName().equals(name)) {
                 return i;
             }
         }
@@ -63,28 +57,23 @@ public class ManagerStaff {
     }
 
     public void salaryFull() {
-        for (int i = 0; i < staffs.length; i++) {
-            if (staffs[i] instanceof FullTime) {
-                System.out.println(staffs[i].salary());
+        for (int i = 0; i < staffs.size(); i++) {
+            if (staffs.get(i) instanceof FullTime) {
+                System.out.println(staffs.get(i).salary());
             }
         }
     }
 
     public void salaryPart() {
-        for (int i = 0; i < staffs.length; i++) {
-            if (staffs[i] instanceof PartTime) {
-                System.out.println(staffs[i].salary());
+        for (int i = 0; i < staffs.size(); i++) {
+            if (staffs.get(i) instanceof PartTime) {
+                System.out.println(staffs.get(i).salary());
             }
         }
     }
 
     public void addStaff(Staff staff) {
-        Staff[] newArr = new Staff[staffs.length + 1];
-        for (int i = 0; i < staffs.length; i++) {
-            newArr[i] = staffs[i];
-        }
-        newArr[newArr.length - 1] = staff;
-        staffs = newArr;
+        staffs.add(staff);
     }
 
     public Staff createStaff(boolean isFullTime) {
